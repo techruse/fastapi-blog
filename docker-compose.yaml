@@ -1,0 +1,25 @@
+version: "3"
+
+services: 
+    kpostgres:
+        hostname: kpostgres
+        image: bitnami/postgresql:latest
+        environment:
+        - POSTGRESQL_USERNAME=guest
+        - POSTGRESQL_PASSWORD=guest
+        - POSTGRESQL_DATABASE=blog
+        ports: 
+        - "5432:5432"
+    fapiblog:
+        hostname: note-service
+        build:
+            context: ./
+        environment:
+        - POSTGRESQL_HOSTNAME=kpostgres
+        - POSTGRESQL_USERNAME=guest
+        - POSTGRESQL_PASSWORD=guest
+        - POSTGRESQL_DATABASE=blog
+        ports: 
+        - "5000:5000"
+        depends_on:
+            - kpostgres
